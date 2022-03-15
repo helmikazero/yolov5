@@ -33,6 +33,8 @@ import cv2
 import torch
 import torch.backends.cudnn as cudnn
 
+import audioplay
+
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
@@ -203,7 +205,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
 
         #HelmetDetection util
         if targetString in s :
-            audiop
+            audioplay.PLAY_WARNING()
 
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
