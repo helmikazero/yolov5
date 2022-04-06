@@ -156,10 +156,6 @@ class Model(nn.Module):
             x = m(x)  # run
             y.append(x if m.i in self.save else None)  # save output
 
-            print("Test Layer")
-            print(m.np)
-            print(m.type)
-
             if visualize:
                 feature_visualization(x, m.type, m.i, save_dir=visualize)
         return x
