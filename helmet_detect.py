@@ -48,9 +48,16 @@ from utils.general import (LOGGER, check_file, check_img_size, check_imshow, che
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
 
+import numpy as py
 
 targetString = "head"
 
+# font                   = cv2.FONT_HERSHEY_SIMPLEX
+# bottomLeftCornerOfText = (10,500)
+# fontScale              = 1
+# fontColor              = (255,255,255)
+# thickness              = 1
+# lineType               = 2
 
 @torch.no_grad()
 def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
@@ -80,7 +87,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
         ):
-    source = str(source)
+    # source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
@@ -177,6 +184,10 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
 
             # Stream results
             im0 = annotator.result()
+            # print(type(annotator.result()))
+            if targetString in s :
+                im0 = cv2.putText(im0,"NO HELMET DETECTED", (208,208), cv2.FONT_HERSHEY_COMPLEX, 2, 255)
+                # im0 = cv2.putText(im0,"NO HELMET DETECTED", (208,208), cv2.FONT_HERSHEY_COMPLEX, 2, 255)
             if view_img:
                 cv2.imshow(str(p), im0)
                 cv2.waitKey(1)  # 1 millisecond
@@ -201,7 +212,8 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                     vid_writer[i].write(im0)
 
         # Print time (inference-only)
-        LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s)')
+        LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s) fps={1/(t3 - t2)}')
+        
 
         #HelmetDetection util
         if targetString in s :
