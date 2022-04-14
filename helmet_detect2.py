@@ -10,7 +10,7 @@ Usage - sources:
                                                              path/*.jpg     # glob
                                                              'https://youtu.be/Zgi9g1ksQHc'  # YouTube
                                                              'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
-                                                             
+
 Usage - formats:
     $ python path/to/detect.py --weights yolov5s.pt                 # PyTorch
                                          yolov5s.torchscript        # TorchScript
@@ -29,11 +29,8 @@ import os
 import sys
 from pathlib import Path
 
-import cv2
 import torch
 import torch.backends.cudnn as cudnn
-
-import audioplay
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -43,24 +40,18 @@ ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 from models.common import DetectMultiBackend
 from utils.datasets import IMG_FORMATS, VID_FORMATS, LoadImages, LoadStreams
-from utils.general import (LOGGER, check_file, check_img_size, check_imshow, check_requirements, colorstr,
+from utils.general import (LOGGER, check_file, check_img_size, check_imshow, check_requirements, colorstr, cv2,
                            increment_path, non_max_suppression, print_args, scale_coords, strip_optimizer, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
 
-import numpy as py
+import audioplay
 
-targetString = "head"
-
-# font                   = cv2.FONT_HERSHEY_SIMPLEX
-# bottomLeftCornerOfText = (10,500)
-# fontScale              = 1
-# fontColor              = (255,255,255)
-# thickness              = 1
-# lineType               = 2
+targetString = 'head'
 
 @torch.no_grad()
-def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
+def run(
+        weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         source=ROOT / 'data/images',  # file/dir/URL/glob, 0 for webcam
         data=ROOT / 'data/coco128.yaml',  # dataset.yaml path
         imgsz=(640, 640),  # inference size (height, width)
@@ -86,8 +77,8 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
-        ):
-    # source = str(source)
+):
+    source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
@@ -123,10 +114,10 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         print(type(im))
         print(type(im0s))
 
+        
 
         t1 = time_sync()
         im = torch.from_numpy(im).to(device)
-        print(type(im))
         im = im.half() if model.fp16 else im.float()  # uint8 to fp16/32
         im /= 255  # 0 - 255 to 0.0 - 1.0
         if len(im.shape) == 3:
@@ -140,21 +131,34 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         t3 = time_sync()
         dt[1] += t3 - t2
 
+        print(pred)
+        print(type(pred))
+
         # NMS
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
         dt[2] += time_sync() - t3
 
+        
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
 
         # Process predictions
         for i, det in enumerate(pred):  # per image
+            print(i)
+            print(type(i))
+
+            print(det)
+            print(type(det))
+
             seen += 1
             if webcam:  # batch_size >= 1
                 p, im0, frame = path[i], im0s[i].copy(), dataset.count
                 s += f'{i}: '
             else:
                 p, im0, frame = path, im0s.copy(), getattr(dataset, 'frame', 0)
+
+            cv2.imshow("Test Image",im0)
+            cv2.waitKey(0)
 
             p = Path(p)  # to Path
             save_path = str(save_dir / p.name)  # im.jpg
@@ -163,7 +167,11 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
+
+            print(len(det))
+
             if len(det):
+                
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(im.shape[2:], det[:, :4], im0.shape).round()
 
@@ -189,10 +197,11 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
 
             # Stream results
             im0 = annotator.result()
-            # print(type(annotator.result()))
             if targetString in s :
                 im0 = cv2.putText(im0,"NO HELMET DETECTED", (208,208), cv2.FONT_HERSHEY_COMPLEX, 2, 255)
-                # im0 = cv2.putText(im0,"NO HELMET DETECTED", (208,208), cv2.FONT_HERSHEY_COMPLEX, 2, 255)
+            
+            
+
             if view_img:
                 cv2.imshow(str(p), im0)
                 cv2.waitKey(1)  # 1 millisecond
@@ -218,11 +227,6 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
 
         # Print time (inference-only)
         LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s) fps={1/(t3 - t2)}')
-        
-
-        #HelmetDetection util
-        if targetString in s :
-            audioplay.PLAY_WARNING()
 
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
@@ -264,7 +268,7 @@ def parse_opt():
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
-    print_args(FILE.stem, opt)
+    print_args(vars(opt))
     return opt
 
 
