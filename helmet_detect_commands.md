@@ -25,4 +25,17 @@ python export.py --weights runs\train\HelmetDetection_yolov5m\weights\best.pt --
 
 python export.py --weights runs\train\HelmetDetection_yolov5n\weights\best.pt --include onnx --dynamic
 
-python helmet_detect2.py --img 416 --weights runs\train\HelmetDetection\weights\best.pt --source test_image\hard_hat_workers43_png.rf.1ef7bacdf272ebe4a911dfbe1926fcb8.jpg
+python helmet_detect2.py --img 640 --weights runs\train\HelmetDetection\weights\best.pt --source test_image\hard_hat_workers43_png.rf.1ef7bacdf272ebe4a911dfbe1926fcb8.jpg
+
+python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5m.pt --source 0 --nosave
+
+
+python helmet_detect2.py --img 640 --weights runs\train\HelmetDetection\weights\best.pt --source test_image\hard_hat_workers262_png_jpg.rf.f47ec92314bd030b8a77b17c9577c9e0.jpg
+
+python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5s.pt --source test_image\video1.mp4
+
+python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5s.pt --source test_image\video2.mp4
+
+python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5s.pt --source 0
+
+python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5s.pt --source test_image\over5mallheadgear.mp4

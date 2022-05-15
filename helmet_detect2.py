@@ -47,7 +47,7 @@ from utils.torch_utils import select_device, time_sync
 
 import audioplay
 
-targetString = 'head'
+targetString = 'no_helmet'
 
 @torch.no_grad()
 def run(
@@ -111,10 +111,6 @@ def run(
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     dt, seen = [0.0, 0.0, 0.0], 0
     for path, im, im0s, vid_cap, s in dataset:
-        print(type(im))
-        print(type(im0s))
-
-        
 
         t1 = time_sync()
         im = torch.from_numpy(im).to(device)
@@ -131,8 +127,12 @@ def run(
         t3 = time_sync()
         dt[1] += t3 - t2
 
-        print(pred)
-        print(type(pred))
+        # print("ABO-----------")
+        # print(pred)
+        # print(type(pred))
+
+
+        # print("ABO-----------")
 
         # NMS
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
@@ -144,11 +144,6 @@ def run(
 
         # Process predictions
         for i, det in enumerate(pred):  # per image
-            print(i)
-            print(type(i))
-
-            print(det)
-            print(type(det))
 
             seen += 1
             if webcam:  # batch_size >= 1
@@ -157,9 +152,6 @@ def run(
             else:
                 p, im0, frame = path, im0s.copy(), getattr(dataset, 'frame', 0)
 
-            cv2.imshow("Test Image",im0)
-            cv2.waitKey(0)
-
             p = Path(p)  # to Path
             save_path = str(save_dir / p.name)  # im.jpg
             txt_path = str(save_dir / 'labels' / p.stem) + ('' if dataset.mode == 'image' else f'_{frame}')  # im.txt
@@ -167,8 +159,6 @@ def run(
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
-
-            print(len(det))
 
             if len(det):
                 
@@ -198,9 +188,10 @@ def run(
             # Stream results
             im0 = annotator.result()
             if targetString in s :
-                im0 = cv2.putText(im0,"NO HELMET DETECTED", (208,208), cv2.FONT_HERSHEY_COMPLEX, 2, 255)
-            
-            
+                im0 = cv2.putText(im0,"NO HELMET DETECTED", (0,400), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),5)
+                print("AWOKOAWAWOAWOKWAOKWAOKAWOWAOKAWO")
+                if webcam:
+                    audioplay.PLAY_WARNING()
 
             if view_img:
                 cv2.imshow(str(p), im0)
