@@ -45,8 +45,6 @@ from utils.general import (LOGGER, check_file, check_img_size, check_imshow, che
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
 
-import audioplay
-
 targetString = 'no_helmet'
 
 @torch.no_grad()
@@ -190,8 +188,6 @@ def run(
             im0 = annotator.result()
             if targetString in s :
                 im0 = cv2.putText(im0,"NO HELMET DETECTED", (0,600), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),5)
-                if webcam:
-                    audioplay.PLAY_WARNING()
 
             if view_img:
                 cv2.imshow(str(p), im0)

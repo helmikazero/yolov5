@@ -78,8 +78,7 @@ def run(
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
 ):
-    source = str(source)
-    weights = 'models/models_/hedec_yolov5s.pt'
+    source = '0'
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
@@ -189,7 +188,7 @@ def run(
             # Stream results
             im0 = annotator.result()
             if targetString in s :
-                im0 = cv2.putText(im0,"NO HELMET DETECTED", (0,600), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),5)
+                im0 = cv2.putText(im0,"NO HELMET DETECTED", (0,400), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),5)
                 if webcam:
                     audioplay.PLAY_WARNING()
 
@@ -257,7 +256,6 @@ def parse_opt():
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
-    # parser.add_argument('--noalarm', action='store_true',)
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
     print_args(vars(opt))
