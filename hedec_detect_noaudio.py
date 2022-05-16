@@ -77,7 +77,6 @@ def run(
         dnn=False,  # use OpenCV DNN for ONNX inference
 ):
     source = str(source)
-    weights = 'models/models_/hedec_yolov5s.pt'
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
