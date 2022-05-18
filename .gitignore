@@ -35,6 +35,9 @@ data/images/*
 !data/images/bus.jpg
 !data/*.sh
 
+
+
+
 results*.csv
 
 # Datasets -------------------------------------------------------------------------------------------------------------
@@ -62,6 +65,9 @@ VOC/
 *_openvino_model/
 darknet53.conv.74
 yolov3-tiny.conv.15
+
+!hedec_weight/hedec_yolov5s_pure.pt
+!hedec_weight/hedec_yolov5s.pt
 
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
 # Byte-compiled / optimized / DLL files
