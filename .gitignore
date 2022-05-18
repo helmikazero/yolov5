@@ -66,8 +66,8 @@ VOC/
 darknet53.conv.74
 yolov3-tiny.conv.15
 
-!hedec_weight/hedec_yolov5s_pure.pt
-!hedec_weight/hedec_yolov5s.pt
+!weightHedect/hedec_yolov5s_pure.pt
+!weightHedect/hedec_yolov5s.pt
 
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
 # Byte-compiled / optimized / DLL files
