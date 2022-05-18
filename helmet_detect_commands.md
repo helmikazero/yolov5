@@ -41,3 +41,6 @@ python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5s.pt --s
 python helmet_detect2.py --img 640 --weights custom_checkpoint\hd_yolov5s.pt --source test_image\over5mallheadgear.mp4
 
 python helmet_detect2.py --img 640 --weights models\models_\hedec_yolov5s.pt --source 0
+
+
+python helmet_detect2.py --img 480 --weights models\models_\hedec_yolov5s.pt --source 'rtps://192.168.0.118:1935'
