@@ -68,6 +68,7 @@ yolov3-tiny.conv.15
 
 !weightHedect/hedec_yolov5s_pure.pt
 !weightHedect/hedec_yolov5s.pt
+!weightHedect/nexgen_hedec_s1.pt
 
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
 # Byte-compiled / optimized / DLL files
