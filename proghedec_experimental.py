@@ -4,12 +4,12 @@ import numpy as np
 import time
 
 
-imgsz = (640,640)
+imgsz = (192,256)
 
 stream = cv2.VideoCapture(0)
 
-stream.set(3,480)
-stream.set(4,384)
+# stream.set(3,480)
+# stream.set(4,384)
 
 customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -70,7 +70,7 @@ def main():
 
         # img = crop_image_square(img)
 
-        # img = cv2.resize(img,imgsz)
+        img = cv2.resize(img,imgsz)
 
         results = score_frame(img,customyolov5s)
 

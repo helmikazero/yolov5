@@ -16,6 +16,7 @@ make_480()
 
 def main():
     old_time = 0
+    
     new_time = 0
 
     while True:
