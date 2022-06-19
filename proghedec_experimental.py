@@ -4,7 +4,8 @@ import numpy as np
 import time
 
 
-imgsz = (192,256)
+imgsz = (256,192)
+# imgsz = (192,256)
 
 stream = cv2.VideoCapture(0)
 
