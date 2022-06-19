@@ -7,6 +7,10 @@ import time
 imgsz = (640,640)
 
 stream = cv2.VideoCapture(0)
+
+stream.set(3,480)
+stream.set(4,384)
+
 customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 customyolov5s.to(device)
