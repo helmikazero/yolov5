@@ -7,10 +7,12 @@ imgsz = (640,640)
 stream = cv2.VideoCapture(0)
 
 
+def make_480():
+    stream.set(3,480)
+    stream.set(4,384)
+    print("new reso has been set")
 
-# stream.set(3,480)
-# stream.set(4,384)
-
+make_480()
 
 def main():
     old_time = 0
