@@ -7,8 +7,6 @@ imgsz = (640,640)
 stream = cv2.VideoCapture(0)
 
 
-
-
 def main():
     old_time = 0
     new_time = 0
