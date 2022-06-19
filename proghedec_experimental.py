@@ -11,9 +11,7 @@ stream = cv2.VideoCapture(0)
 # stream.set(3,480)
 # stream.set(4,384)
 
-customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-customyolov5s.to(device)
+
 
 color = [(0,0,255),(0,255,0)]
 
@@ -64,6 +62,11 @@ def printHUD(fps,img, predresultpandas):
 def main():
     old_time = 0
     new_time = 0
+
+    customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
+    customyolov5s.conf = 0.3
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    customyolov5s.to(device)
 
     while True:
         ret_val, img = stream.read()
