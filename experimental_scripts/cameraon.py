@@ -7,6 +7,11 @@ imgsz = (640,640)
 stream = cv2.VideoCapture(0)
 
 
+
+stream.set(3,480)
+stream.set(4,384)
+
+
 def main():
     old_time = 0
     new_time = 0
@@ -31,8 +36,6 @@ def main():
         reso_tx = "x :"+str(img.shape[0])+" y:"+str(img.shape[1])
 
         img = cv2.putText(img,reso_tx,(0,60),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0, 255, 0),2)
-
-        img = cv2.putText(img,fps,(0,30),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0, 255, 0),2)
         
         cv2.imshow('Frame',img)
 
