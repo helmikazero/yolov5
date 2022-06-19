@@ -70,9 +70,9 @@ def main():
 
         results = score_frame(img,customyolov5s)
 
-        print("-----------------------THE RESULTS -------------------------------")
-        print(results)
-        print("-----------------------END OF RESULT---------------------------------")
+        # print("-----------------------THE RESULTS -------------------------------")
+        # print(results)
+        # print("-----------------------END OF RESULT---------------------------------")
 
         new_time = time.time()
         fps = 1/(new_time-old_time)

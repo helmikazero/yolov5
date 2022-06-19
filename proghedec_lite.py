@@ -8,6 +8,9 @@ imgsz = (256,256)
 
 stream = cv2.VideoCapture(0)
 customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+customyolov5s.to(device)
+
 
 color = [(0,0,255),(0,255,0)]
 
@@ -23,8 +26,6 @@ default_warning_fsize = 1.8
 szmod = imgsz[0]/default_size
 
 def score_frame(frame,model):
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model.to(device)
     results = model(frame)
     mantap = results.pandas().xyxy[0]
     
@@ -69,9 +70,9 @@ def main():
 
         results = score_frame(img,customyolov5s)
 
-        print("-----------------------THE RESULTS -------------------------------")
-        print(results)
-        print("-----------------------END OF RESULT---------------------------------")
+        # print("-----------------------THE RESULTS -------------------------------")
+        # print(results)
+        # print("-----------------------END OF RESULT---------------------------------")
 
         new_time = time.time()
         fps = 1/(new_time-old_time)
