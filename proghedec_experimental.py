@@ -68,7 +68,7 @@ def main():
 
         # img = cv2.resize(img,imgsz)
 
-        # results = score_frame(img,customyolov5s)
+        results = score_frame(img,customyolov5s)
 
         # print("-----------------------THE RESULTS -------------------------------")
         # print(results)
