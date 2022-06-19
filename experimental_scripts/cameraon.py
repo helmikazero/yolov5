@@ -8,8 +8,8 @@ stream = cv2.VideoCapture(0)
 
 
 
-stream.set(3,480)
-stream.set(4,384)
+# stream.set(3,480)
+# stream.set(4,384)
 
 
 def main():
