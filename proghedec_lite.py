@@ -61,6 +61,8 @@ def main():
     old_time = 0
     new_time = 0
 
+    print(device)
+
     while True:
         ret_val, img = stream.read()
 
