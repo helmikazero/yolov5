@@ -27,35 +27,35 @@ default_warning_fsize = 1.8
 
 szmod = imgsz[0]/default_size
 
-def score_frame(frame,model):
+# def score_frame(frame,model):
     
-    results = model(frame)
-    mantap = results.pandas().xyxy[0]
+#     results = model(frame)
+#     mantap = results.pandas().xyxy[0]
     
-    return mantap
+#     return mantap
             
 
-def printHUD(fps,img, predresultpandas):
-    printed_img = img
+# def printHUD(fps,img, predresultpandas):
+#     printed_img = img
 
-    no_helmet_count = 0
-    for i in range(len(predresultpandas)):
+#     no_helmet_count = 0
+#     for i in range(len(predresultpandas)):
 
-        printed_img = cv2.rectangle(printed_img, (int(predresultpandas['xmin'][i]),int(predresultpandas['ymin'][i])),(int(predresultpandas['xmax'][i]),int(predresultpandas['ymax'][i])),color[int(predresultpandas['class'][i])],2)
-        printed_img = cv2.putText(printed_img,predresultpandas['name'][i],(int(predresultpandas['xmin'][i]),int(predresultpandas['ymin'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
-        printed_img = cv2.putText(printed_img,str(predresultpandas['confidence'][i]),(int(predresultpandas['xmin'][i]),int(predresultpandas['ymax'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
+#         printed_img = cv2.rectangle(printed_img, (int(predresultpandas['xmin'][i]),int(predresultpandas['ymin'][i])),(int(predresultpandas['xmax'][i]),int(predresultpandas['ymax'][i])),color[int(predresultpandas['class'][i])],2)
+#         printed_img = cv2.putText(printed_img,predresultpandas['name'][i],(int(predresultpandas['xmin'][i]),int(predresultpandas['ymin'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
+#         printed_img = cv2.putText(printed_img,str(predresultpandas['confidence'][i]),(int(predresultpandas['xmin'][i]),int(predresultpandas['ymax'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
 
-        if predresultpandas['name'][i] == "no_helmet":
-            no_helmet_count += 1
+#         if predresultpandas['name'][i] == "no_helmet":
+#             no_helmet_count += 1
         
-    # PRINT WARNING IF NO HELMET EXIST
-    if no_helmet_count > 0:
-        printed_img = cv2.putText(printed_img,"NO HELMET DETECTED",(int(default_warning_pos[0]*szmod),int(default_warning_pos[1]*szmod)),cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize*szmod,color[0],5)
+#     # PRINT WARNING IF NO HELMET EXIST
+#     if no_helmet_count > 0:
+#         printed_img = cv2.putText(printed_img,"NO HELMET DETECTED",(int(default_warning_pos[0]*szmod),int(default_warning_pos[1]*szmod)),cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize*szmod,color[0],5)
 
-    # PRINT FPS
-    printed_img = cv2.putText(printed_img,fps,(int(320*szmod),int(30*szmod)),cv2.FONT_HERSHEY_SIMPLEX,0.9*szmod,color[0],2)
+#     # PRINT FPS
+#     printed_img = cv2.putText(printed_img,fps,(int(320*szmod),int(30*szmod)),cv2.FONT_HERSHEY_SIMPLEX,0.9*szmod,color[0],2)
 
-    return printed_img
+#     return printed_img
 
 
 
@@ -64,10 +64,11 @@ def main():
     old_time = 0
     new_time = 0
 
-    customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
-    customyolov5s.conf = 0.3
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    customyolov5s.to(device)
+    model = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
+    model.cuda()
+    model.conf = 0.3
+    # device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # customyolov5s.to(device)
 
     while True:
         ret_val, img = stream.read()
@@ -76,7 +77,7 @@ def main():
 
         img = cv2.resize(img,imgsz)
 
-        results = customyolov5s(img)
+        results = model(img)
 
         # print("-----------------------THE RESULTS -------------------------------")
         # print(results)
@@ -98,14 +99,14 @@ def main():
             break
 
 
-def crop_image_square(img):
+# def crop_image_square(img):
 
-    resized_image = 0
+#     resized_image = 0
 
-    if img.shape[0] < img.shape[1]:
-        resized_image = img[:int(img.shape[0]),int((img.shape[1]/2)-(img.shape[0]/2)):int((img.shape[1]/2)+(img.shape[0]/2))]
+#     if img.shape[0] < img.shape[1]:
+#         resized_image = img[:int(img.shape[0]),int((img.shape[1]/2)-(img.shape[0]/2)):int((img.shape[1]/2)+(img.shape[0]/2))]
 
-    return resized_image
+#     return resized_image
 
 if __name__ == "__main__":
     main()
