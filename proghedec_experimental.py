@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 
-imgsz = (256,192)
+imgsz = (480,480)
 # imgsz = (192,256)
 
 stream = cv2.VideoCapture(0)
@@ -77,7 +77,7 @@ def main():
 
         img = cv2.resize(img,imgsz)
 
-        results = model(img, size=256)
+        results = model(img, size=480)
 
         # print("-----------------------THE RESULTS -------------------------------")
         # print(results)
