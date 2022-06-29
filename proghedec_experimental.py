@@ -16,16 +16,16 @@ stream = cv2.VideoCapture(0)
 
 color = [(0,0,255),(0,255,0)]
 
-default_size = 640
-default_bbox_thicness = 2
+# default_size = 640
+# default_bbox_thicness = 2
 
-default_fps_pos = [320,30]
-default_fps_fsize = 1
+# default_fps_pos = [320,30]
+# default_fps_fsize = 1
 
-default_warning_pos = [0,640]
-default_warning_fsize = 1.8
+# default_warning_pos = [0,640]
+# default_warning_fsize = 1.8
 
-szmod = imgsz[0]/default_size
+# szmod = imgsz[0]/default_size
 
 # def score_frame(frame,model):
     
@@ -77,7 +77,7 @@ def main():
 
         img = cv2.resize(img,imgsz)
 
-        results = model(img)
+        results = model(img, size=256)
 
         # print("-----------------------THE RESULTS -------------------------------")
         # print(results)
