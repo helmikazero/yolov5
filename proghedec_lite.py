@@ -78,7 +78,7 @@ def main():
 
         fps = str(int(fps))
 
-        img = printHUD(fps,img,results)
+        # img = printHUD(fps,img,results)
         
         cv2.imshow('Frame',img)
 
