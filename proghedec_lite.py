@@ -78,6 +78,7 @@ def main():
 
         fps = str(int(fps))
 
+        img = cv2.putText(img,fps,(0,30),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0, 255, 0),2)
         # img = printHUD(fps,img,results)
         
         cv2.imshow('Frame',img)
