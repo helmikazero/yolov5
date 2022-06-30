@@ -7,7 +7,7 @@ import time
 imgsz = (256,256)
 
 stream = cv2.VideoCapture(0)
-customyolov5s = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/hedec_pretrain_S.pt', source='local')
+customyolov5s = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.pt', source='local')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 customyolov5s = customyolov5s.to(device)
 
@@ -78,8 +78,10 @@ def main():
 
         fps = str(int(fps))
 
-        img = cv2.putText(img,fps,(0,30),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0, 255, 0),2)
-        # img = printHUD(fps,img,results)
+        # img = cv2.putText(img,fps,(0,30),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0, 255, 0),2)
+        img = printHUD(fps,img,results)
+
+        img = cv2.resize(img, (640,640))
         
         cv2.imshow('Frame',img)
 
