@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 
-imgsz = (256,256)
+imgsz = (640,640)
 
 stream = cv2.VideoCapture(0)
 customyolov5s = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.pt', source='local')
