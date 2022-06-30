@@ -7,7 +7,7 @@ import time
 imgsz = (256,256)
 
 stream = cv2.VideoCapture(0)
-customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
+customyolov5s = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/hedec_pretrain_S.pt', source='local')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 customyolov5s = customyolov5s.to(device)
 
@@ -26,7 +26,7 @@ default_warning_fsize = 1.8
 szmod = imgsz[0]/default_size
 
 def score_frame(frame,model):
-    results = model(frame)
+    results = model(frame, size=imgsz[0])
     mantap = results.pandas().xyxy[0]
     
     return mantap
@@ -71,10 +71,6 @@ def main():
         img = cv2.resize(img,imgsz)
 
         results = score_frame(img,customyolov5s)
-
-        # print("-----------------------THE RESULTS -------------------------------")
-        # print(results)
-        # print("-----------------------END OF RESULT---------------------------------")
 
         new_time = time.time()
         fps = 1/(new_time-old_time)
