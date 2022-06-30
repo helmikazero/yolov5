@@ -25,6 +25,12 @@ default_warning_fsize = 1.8
 
 szmod = imgsz[0]/default_size
 
+savevid = True
+
+result = cv2.VideoWriter('runs/hedec/HedecRecord.mp4', 
+                         cv2.VideoWriter_fourcc(*'mp4v'),
+                         10, imgsz)
+
 def score_frame(frame,model):
     results = model(frame, size=imgsz[0])
     mantap = results.pandas().xyxy[0]
@@ -48,13 +54,15 @@ def printHUD(fps,img, predresultpandas):
     # PRINT WARNING IF NO HELMET EXIST
     if no_helmet_count > 0:
         printed_img = cv2.putText(printed_img,"NO HELMET DETECTED",(int(default_warning_pos[0]*szmod),int(default_warning_pos[1]*szmod)),cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize*szmod,color[0],5)
+        TRIGGER_ALARM()
 
     # PRINT FPS
     printed_img = cv2.putText(printed_img,fps,(int(320*szmod),int(30*szmod)),cv2.FONT_HERSHEY_SIMPLEX,0.9*szmod,color[0],2)
 
     return printed_img
 
-
+def TRIGGER_ALARM():
+    print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
 
 
 def main():
@@ -81,6 +89,10 @@ def main():
         # img = cv2.putText(img,fps,(0,30),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0, 255, 0),2)
         img = printHUD(fps,img,results)
 
+
+        if savevid:
+            result.write(img)
+
         img = cv2.resize(img, (640,640))
         
         cv2.imshow('Frame',img)
@@ -88,6 +100,8 @@ def main():
         if cv2.waitKey(1) == 27:
             break
 
+    if savevid:
+        result.release()
 
 def crop_image_square(img):
 

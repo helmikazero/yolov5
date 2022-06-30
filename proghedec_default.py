@@ -7,10 +7,10 @@ import time
 imgsz = (640,640)
 
 stream = cv2.VideoCapture(0)
-customyolov5s = torch.hub.load('','custom', path='weightHedect/hedec_yolov5s.pt', source='local')
-print(torch.cuda.is_available())
+customyolov5s = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/hedec_pretrain_S.pt', source='local')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-customyolov5s.to(device)
+customyolov5s = customyolov5s.to(device)
+
 
 color = [(0,0,255),(0,255,0)]
 
@@ -25,9 +25,14 @@ default_warning_fsize = 1.8
 
 szmod = imgsz[0]/default_size
 
+savevid = True
+
+result = cv2.VideoWriter(filename='runs/hedec/HedecRecord.mp4', 
+                         fourcc=cv2.VideoWriter_fourcc(*'mp4v'),
+                         fps=20, frameSize=imgsz)
+
 def score_frame(frame,model):
-    
-    results = model(frame)
+    results = model(frame, size=imgsz[0])
     mantap = results.pandas().xyxy[0]
     
     return mantap
@@ -49,31 +54,29 @@ def printHUD(fps,img, predresultpandas):
     # PRINT WARNING IF NO HELMET EXIST
     if no_helmet_count > 0:
         printed_img = cv2.putText(printed_img,"NO HELMET DETECTED",(int(default_warning_pos[0]*szmod),int(default_warning_pos[1]*szmod)),cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize*szmod,color[0],5)
+        TRIGGER_ALARM()
 
     # PRINT FPS
     printed_img = cv2.putText(printed_img,fps,(int(320*szmod),int(30*szmod)),cv2.FONT_HERSHEY_SIMPLEX,0.9*szmod,color[0],2)
 
     return printed_img
 
-
+def TRIGGER_ALARM():
+    print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
 
 
 def main():
     old_time = 0
     new_time = 0
 
+    print(device)
+
     while True:
         ret_val, img = stream.read()
-
         img = crop_image_square(img)
-
         img = cv2.resize(img,imgsz)
 
         results = score_frame(img,customyolov5s)
-
-        # print("-----------------------THE RESULTS -------------------------------")
-        # print(results)
-        # print("-----------------------END OF RESULT---------------------------------")
 
         new_time = time.time()
         fps = 1/(new_time-old_time)
@@ -82,11 +85,22 @@ def main():
         fps = str(int(fps))
 
         img = printHUD(fps,img,results)
+
+        if savevid:
+            result.write(img)
+
+        img = cv2.resize(img, (640,640))
         
         cv2.imshow('Frame',img)
 
         if cv2.waitKey(1) == 27:
             break
+
+    if savevid:
+        stream.release()
+        result.release()
+
+    cv2.destroyAllWindows()
 
 
 def crop_image_square(img):
