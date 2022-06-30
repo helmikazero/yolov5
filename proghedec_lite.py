@@ -10,6 +10,7 @@ stream = cv2.VideoCapture(0)
 customyolov5s = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.pt', source='local')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 customyolov5s = customyolov5s.to(device)
+customyolov5s.conf = 0.8
 
 
 color = [(0,0,255),(0,255,0)]
