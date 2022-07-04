@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import time
 import os
+import argparse
 
 
 models_name = [
@@ -51,7 +52,7 @@ def printHUD(fps,img, predresultpandas):
 
         printed_img = cv2.rectangle(printed_img, (int(predresultpandas['xmin'][i]),int(predresultpandas['ymin'][i])),(int(predresultpandas['xmax'][i]),int(predresultpandas['ymax'][i])),color[int(predresultpandas['class'][i])],2)
         printed_img = cv2.putText(printed_img,predresultpandas['name'][i],(int(predresultpandas['xmin'][i]),int(predresultpandas['ymin'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
-        printed_img = cv2.putText(printed_img,str(predresultpandas['confidence'][i]),(int(predresultpandas['xmin'][i]),int(predresultpandas['ymax'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
+        printed_img = cv2.putText(printed_img,str(round(predresultpandas['confidence'][i],2)),(int(predresultpandas['xmin'][i]),int(predresultpandas['ymax'][i])),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[int(predresultpandas['class'][i])],2)
 
         if predresultpandas['name'][i] == "no_helmet":
             no_helmet_count += 1
@@ -70,57 +71,52 @@ def TRIGGER_ALARM():
     print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
 
 
-def main():
+def main(weights,source,saveas):
     old_time = 0
     new_time = 0
 
     # print(device)
 
-    camIndex = int(input("Index Camera?"))
-
-    for x in range(len(models_name)):
-        print('['+str(x)+']'+models_name[x])
-    model_index = int(input('Insert model index'))
-
-    model = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/'+models_name[model_index], source='local')
+    model = torch.hub.load('','custom', path=weights, source='local')
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = model.to(device)
 
-    stream = cv2.VideoCapture(camIndex)
+    stream = cv2.VideoCapture(source)
 
-    print(stream.get(3))
-    print(stream.get(4))
-
-    default_path = 'runs/hedec/HedecRecord.mp4'
+    default_path = saveas
     check_path = uniquify(default_path)
 
     result = cv2.VideoWriter(filename=check_path, 
                          fourcc=cv2.VideoWriter_fourcc(*'mp4v'),
                          fps=20, frameSize=(int(stream.get(3)),int(stream.get(4))))
-
-    while True:
+    progress = 0
+    lenght = int(stream.get(cv2.CAP_PROP_FRAME_COUNT))
+    while(stream.isOpened()):
         ret_val, img = stream.read()
         # img = crop_image_square(img)
         # img = cv2.resize(img,imgsz)
+        if ret_val == True: 
+            results = score_frame(img,model)
 
-        results = score_frame(img,model)
+            new_time = time.time()
+            fps = 1/(new_time-old_time)
+            old_time = new_time
 
-        new_time = time.time()
-        fps = 1/(new_time-old_time)
-        old_time = new_time
+            fps = str(int(fps))
 
-        fps = str(int(fps))
+            img = printHUD(fps,img,results)
 
-        img = printHUD(fps,img,results)
-
-        if savevid:
-            result.write(img)
-        
-        cv2.imshow('Frame',img)
-
-        if cv2.waitKey(1) == 27:
+            if savevid:
+                result.write(img)
+            
+            progress = progress+1
+            print(str(round((progress/lenght)*100,2))+"%"+"  "+str(progress)+"/"+str(lenght))
+            if cv2.waitKey(1) == 27:
+                break
+        else:
             break
+
 
     if savevid:
         stream.release()
@@ -147,5 +143,14 @@ def crop_image_square(img):
 
     return resized_image
 
+
+def parse_opt():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--weights', type=str, help='model path')
+    parser.add_argument('--source', type=str, help='address')
+    parser.add_argument('--saveas',type=str,help='where to save')
+    opt = parser.parse_args()
+    return opt
+
 if __name__ == "__main__":
-    main()
+    main(**vars(parse_opt()))
