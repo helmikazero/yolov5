@@ -32,7 +32,7 @@ result = cv2.VideoWriter(filename='runs/hedec/HedecRecord.mp4',
                          fps=20, frameSize=imgsz)
 
 def score_frame(frame,model):
-    results = model(frame, size=imgsz[0])
+    results = model(frame, size=640)
     mantap = results.pandas().xyxy[0]
     
     return mantap
@@ -73,8 +73,8 @@ def main():
 
     while True:
         ret_val, img = stream.read()
-        img = crop_image_square(img)
-        img = cv2.resize(img,imgsz)
+        # img = crop_image_square(img)
+        # img = cv2.resize(img,imgsz)
 
         results = score_frame(img,customyolov5s)
 
