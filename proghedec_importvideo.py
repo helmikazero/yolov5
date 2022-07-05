@@ -121,6 +121,8 @@ def main(weights,source,saveas):
         stream.release()
         result.release()
 
+    print("Result saved as"+check_path)
+
 def uniquify(path):
     filename, extension = os.path.splitext(path)
     counter = 1

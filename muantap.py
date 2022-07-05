@@ -3,7 +3,7 @@ import torch
 import numpy as np
 
 
-imgsz = (240,240)
+imgsz = (640,640)
 
 stream = cv2.VideoCapture(0)
 customyolov5s = torch.hub.load('','custom', path='weightHedect/nexgen_hedec_s2.pt', source='local')
@@ -16,7 +16,7 @@ clrRed = (0,0,255)
 def score_frame(frame,model):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.to(device)
-    results = model(frame)
+    results = model(frame,size=640)
     mantap = results.pandas().xyxy[0]
     
     return mantap
@@ -139,7 +139,7 @@ def main():
 
         img = crop_image_square(img)
 
-        results = score_frame(img,customyolov5s)
+        results = score_frame(img[..., ::-1],customyolov5s)
 
         presults2 = addCenterToPresultsDataFrame(results)
 
