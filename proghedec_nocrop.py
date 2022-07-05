@@ -89,9 +89,9 @@ def main():
     conf_thres = input('Confidence Threshold =')
     iou_thres = input('IOU for NMS threshold =')
 
-    if conf_thres == NULL:
+    if conf_thres == '':
         conf_thres = 0.25
-    if iou_thres == NULL:
+    if iou_thres == '':
         iou_thres = 0.45
     
     conf_thres = float(conf_thres)
