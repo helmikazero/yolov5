@@ -85,7 +85,20 @@ def main():
         print('['+str(x)+']'+models_name[x])
     model_index = int(input('Insert model index='))
 
+    conf_thres = input('Confidence Threshold =')
+    iou_thres = input('IOU for NMS threshold =')
+
+    if conf_thres == '':
+        conf_thres = 0.25
+    if iou_thres == '':
+        iou_thres = 0.45
+    
+    conf_thres = float(conf_thres)
+    iou_thres = float(iou_thres)
+
     model = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/'+models_name[model_index], source='local')
+    model.conf = conf_thres
+    model.iou = iou_thres
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = model.to(device)
@@ -100,6 +113,8 @@ def main():
 
     default_path = 'runs/hedec/HedecRecord.mp4'
     check_path = uniquify(default_path)
+
+
 
     result = cv2.VideoWriter(filename=check_path, 
                          fourcc=cv2.VideoWriter_fourcc(*'mp4v'),
