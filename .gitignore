@@ -70,6 +70,10 @@ yolov3-tiny.conv.15
 !weightHedect/hedec_yolov5s.pt
 !weightHedect/nexgen_hedec_s1.pt
 !audio/warning.wav
+!weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.engine
+!weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.pt
+!eightHedect/FINAL_WEIGHTS/hedec_pretrain_S.engine
+!weightHedect/FINAL_WEIGHTS/hedec_pretrain_S.pt
 
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
 # Byte-compiled / optimized / DLL files

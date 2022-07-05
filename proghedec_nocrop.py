@@ -8,14 +8,16 @@ import audioplay
 
 
 models_name = [
-    'hedec_pretrain_N',
-    'hedec_pretrain_S',
-    'hedec_pretrain_M',
-    'hedec_pretrain_L',
-    'hedec_pure_N',
-    'hedec_pure_S',
-    'hedec_pure_M',
-    'hedec_pure_L'
+    'hedec_pretrain_N.pt',
+    'hedec_pretrain_N.engine',
+    'hedec_pretrain_S.pt',
+    'hedec_pretrain_S.engine'
+    'hedec_pretrain_M.pt',
+    'hedec_pretrain_L.pt',
+    'hedec_pure_N.pt',
+    'hedec_pure_S.pt',
+    'hedec_pure_M.pt',
+    'hedec_pure_L.pt',
 ]
 
 color = [(0,0,255),(0,255,0)]
@@ -32,8 +34,6 @@ fps_textsz = cv2.getTextSize('00',cv2.FONT_HERSHEY_SIMPLEX,0.9,2)[0]
 
 warning_text = 'NO_HELMET DETECTED'
 textsize = cv2.getTextSize(warning_text,cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize,5)[0]
-
-savevid = True
 
 
 
@@ -107,8 +107,6 @@ def main():
 
     while True:
         ret_val, img = stream.read()
-        # img = crop_image_square(img)
-        # img = cv2.resize(img,imgsz)
 
         results = score_frame(img[..., ::-1],model)
 
