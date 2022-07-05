@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import time
 import os
+import audioplay
 
 
 models_name = [
@@ -31,9 +32,10 @@ fps_textsz = cv2.getTextSize('00',cv2.FONT_HERSHEY_SIMPLEX,0.9,2)[0]
 
 warning_text = 'NO_HELMET DETECTED'
 textsize = cv2.getTextSize(warning_text,cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize,5)[0]
-print(textsize[1])
 
 savevid = True
+audio_alarm = True
+
 
 
 def score_frame(frame,model):
@@ -68,6 +70,8 @@ def printHUD(fps,img, predresultpandas):
 
 def TRIGGER_ALARM():
     print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
+    if audio_alarm :
+        audioplay.PLAY_WARNING()
 
 
 def main():
@@ -76,16 +80,19 @@ def main():
 
     # print(device)
 
-    camIndex = int(input("Index Camera?"))
+    camIndex = int(input("Index Camera? ="))
 
     for x in range(len(models_name)):
         print('['+str(x)+']'+models_name[x])
-    model_index = int(input('Insert model index'))
+    model_index = int(input('Insert model index='))
 
     model = torch.hub.load('','custom', path='weightHedect/FINAL_WEIGHTS/'+models_name[model_index], source='local')
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = model.to(device)
+
+    savevid = input_bool(input('Save video? (0 | 1) ='))
+    audio_alarm = input_bool(input('Activate warning sound? (0 | 1) ='))
 
     stream = cv2.VideoCapture(camIndex)
 
@@ -137,6 +144,12 @@ def uniquify(path):
         counter += 1
 
     return path
+
+def input_bool(inpt):
+    if inpt == "0":
+        return False
+    elif inpt == "1":
+        return True
 
 def crop_image_square(img):
 

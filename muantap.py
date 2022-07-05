@@ -6,7 +6,7 @@ import numpy as np
 imgsz = (640,640)
 
 stream = cv2.VideoCapture(0)
-customyolov5s = torch.hub.load('','custom', path='weightHedect/nexgen_hedec_s2.pt', source='local')
+customyolov5s = torch.hub.load('','custom', path='weightHedect/nextgen_hedec_s2.pt', source='local')
 
 #colorcode
 clrYellow = (38,247,255)
