@@ -89,7 +89,7 @@ def main(weights,source,saveas):
 
     result = cv2.VideoWriter(filename=check_path, 
                          fourcc=cv2.VideoWriter_fourcc(*'mp4v'),
-                         fps=stream.get(cv2.CV_CAP_PROP_FPS), frameSize=(int(stream.get(3)),int(stream.get(4))))
+                         fps=stream.get(cv2.CAP_PROP_FPS), frameSize=(int(stream.get(3)),int(stream.get(4))))
     progress = 0
     lenght = int(stream.get(cv2.CAP_PROP_FRAME_COUNT))
     while(stream.isOpened()):
