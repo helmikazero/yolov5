@@ -96,6 +96,7 @@ def main(weights,source,saveas):
         ret_val, img = stream.read()
         # img = crop_image_square(img)
         # img = cv2.resize(img,imgsz)
+        img = img[..., ::-1]
         if ret_val == True: 
             results = score_frame(img,model)
 
