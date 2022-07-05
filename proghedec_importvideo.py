@@ -32,7 +32,6 @@ fps_textsz = cv2.getTextSize('00',cv2.FONT_HERSHEY_SIMPLEX,0.9,2)[0]
 
 warning_text = 'NO_HELMET DETECTED'
 textsize = cv2.getTextSize(warning_text,cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize,5)[0]
-print(textsize[1])
 
 savevid = True
 
@@ -122,8 +121,6 @@ def main(weights,source,saveas):
     if savevid:
         stream.release()
         result.release()
-
-    cv2.destroyAllWindows()
 
 def uniquify(path):
     filename, extension = os.path.splitext(path)
