@@ -11,7 +11,7 @@ models_name = [
     'hedec_pretrain_N.pt',
     'hedec_pretrain_N.engine',
     'hedec_pretrain_S.pt',
-    'hedec_pretrain_S.engine'
+    'hedec_pretrain_S.engine',
     'hedec_pretrain_M.pt',
     'hedec_pretrain_L.pt',
     'hedec_pure_N.pt',
