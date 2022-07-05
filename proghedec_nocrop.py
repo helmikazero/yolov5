@@ -34,7 +34,6 @@ warning_text = 'NO_HELMET DETECTED'
 textsize = cv2.getTextSize(warning_text,cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize,5)[0]
 
 savevid = True
-audio_alarm = True
 
 
 
@@ -45,7 +44,7 @@ def score_frame(frame,model):
     return mantap
             
 
-def printHUD(fps,img, predresultpandas):
+def analyze_result(fps,img, predresultpandas,audio_alarm):
     printed_img = img
 
     no_helmet_count = 0
@@ -61,14 +60,14 @@ def printHUD(fps,img, predresultpandas):
     # PRINT WARNING IF NO HELMET EXIST
     if no_helmet_count > 0:
         printed_img = cv2.putText(printed_img,"NO_HELMET DETECTED",(default_warning_pos[0],printed_img.shape[0]-textsize[1]),cv2.FONT_HERSHEY_SIMPLEX,default_warning_fsize,color[0],5)
-        TRIGGER_ALARM()
+        TRIGGER_ALARM(audio_alarm)
 
     # PRINT FPS
     printed_img = cv2.putText(printed_img,fps,(int(printed_img.shape[1]/2),fps_textsz[1]),cv2.FONT_HERSHEY_SIMPLEX,0.9,color[0],2)
 
     return printed_img
 
-def TRIGGER_ALARM():
+def TRIGGER_ALARM(audio_alarm):
     print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
     if audio_alarm :
         audioplay.PLAY_WARNING()
@@ -119,7 +118,7 @@ def main():
 
         fps = str(int(fps))
 
-        img = printHUD(fps,img,results)
+        img = analyze_result(fps,img,results,audio_alarm)
 
         if savevid:
             result.write(img)
