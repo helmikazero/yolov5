@@ -103,9 +103,8 @@ def main():
         ret_val, img = stream.read()
         # img = crop_image_square(img)
         # img = cv2.resize(img,imgsz)
-        img = img[..., ::-1]
 
-        results = score_frame(img,model)
+        results = score_frame(img[..., ::-1],model)
 
         new_time = time.time()
         fps = 1/(new_time-old_time)
