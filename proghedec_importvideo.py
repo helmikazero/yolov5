@@ -112,8 +112,8 @@ def main(weights,source,saveas):
             
             progress = progress+1
             print(str(round((progress/lenght)*100,2))+"%"+"  "+str(progress)+"/"+str(lenght))
-            if cv2.waitKey(1) == 27:
-                break
+            # if cv2.waitKey(1) == 27:
+            #     break
         else:
             break
 
