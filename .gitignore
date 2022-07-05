@@ -72,7 +72,7 @@ yolov3-tiny.conv.15
 !audio/warning.wav
 !weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.engine
 !weightHedect/FINAL_WEIGHTS/hedec_pretrain_N.pt
-!eightHedect/FINAL_WEIGHTS/hedec_pretrain_S.engine
+!weightHedect/FINAL_WEIGHTS/hedec_pretrain_S.engine
 !weightHedect/FINAL_WEIGHTS/hedec_pretrain_S.pt
 
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
