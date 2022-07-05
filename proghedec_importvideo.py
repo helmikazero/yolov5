@@ -95,9 +95,8 @@ def main(weights,source,saveas):
         ret_val, img = stream.read()
         # img = crop_image_square(img)
         # img = cv2.resize(img,imgsz)
-        img4pred = img[..., ::-1]
         if ret_val == True: 
-            results = score_frame(img4pred,model)
+            results = score_frame(img[..., ::-1],model)
 
             new_time = time.time()
             fps = 1/(new_time-old_time)
