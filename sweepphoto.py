@@ -6,7 +6,7 @@ import os
 import keyboard
 
 
-def main(source,saveat):
+def main(source,saveat,buffer):
     old_time = 0
     new_time = 0
 
@@ -24,8 +24,11 @@ def main(source,saveat):
             
             cv2.imshow(filename,img)
 
+            if progress % buffer == 0:
+                saveframe(img,filename,saveat)
+
             if keyboard.is_pressed('space'):
-                    saveframe(img,filename,saveat)
+                saveframe(img,filename,saveat)
 
             if cv2.waitKey(1) == 27:
                 break
@@ -77,6 +80,7 @@ def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--source', type=str, help='address')
     parser.add_argument('--saveat', type=str, help='wheretosave')
+    parser.add_argument('--buffer', type=int, help='how many image before save')
     opt = parser.parse_args()
     return opt
 

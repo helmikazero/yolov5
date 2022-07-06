@@ -70,7 +70,7 @@ def TRIGGER_ALARM():
     print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
 
 
-def main(weights,source,saveas):
+def main(weights,source):
     old_time = 0
     new_time = 0
 
@@ -83,7 +83,8 @@ def main(weights,source,saveas):
 
     stream = cv2.VideoCapture(source)
 
-    default_path = saveas
+    default_path = source[:-4]+"_pred.mp4"
+    print(default_path)
     check_path = uniquify(default_path)
 
     result = cv2.VideoWriter(filename=check_path, 
@@ -147,7 +148,7 @@ def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, help='model path')
     parser.add_argument('--source', type=str, help='address')
-    parser.add_argument('--saveas',type=str,help='where to save')
+    # parser.add_argument('--saveas',type=str,help='where to save')
     opt = parser.parse_args()
     return opt
 
