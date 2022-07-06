@@ -70,7 +70,7 @@ def TRIGGER_ALARM():
     print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
 
 
-def main(weights,source):
+def main(weights,source,conf_thres=0.25,iou_thres=0.45):
     old_time = 0
     new_time = 0
 
@@ -80,6 +80,8 @@ def main(weights,source):
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = model.to(device)
+    model.conf = conf_thres
+    model.iou = iou_thres
 
     stream = cv2.VideoCapture(source)
 
@@ -148,6 +150,8 @@ def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, help='model path')
     parser.add_argument('--source', type=str, help='address')
+    parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
+    parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
     # parser.add_argument('--saveas',type=str,help='where to save')
     opt = parser.parse_args()
     return opt
