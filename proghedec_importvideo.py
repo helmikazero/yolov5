@@ -70,7 +70,7 @@ def TRIGGER_ALARM():
     print("ALARM FOR NO HELMET HAS BEEN TRIGGERED")
 
 
-def main(weights,source,conf_thres=0.25,iou_thres=0.45):
+def main(weights,source,conf_thres=0.25,iou_thres=0.45,cropimage=False):
     old_time = 0
     new_time = 0
 
@@ -96,7 +96,9 @@ def main(weights,source,conf_thres=0.25,iou_thres=0.45):
     lenght = int(stream.get(cv2.CAP_PROP_FRAME_COUNT))
     while(stream.isOpened()):
         ret_val, img = stream.read()
-        # img = crop_image_square(img)
+
+        if cropimage:
+            img = crop_image_square(img)
         # img = cv2.resize(img,imgsz)
         if ret_val == True: 
             results = score_frame(img[..., ::-1],model)
@@ -152,6 +154,7 @@ def parse_opt():
     parser.add_argument('--source', type=str, help='address')
     parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
+    parser.add_argument('--cropimage',action='store_true', help='cropvideo')
     # parser.add_argument('--saveas',type=str,help='where to save')
     opt = parser.parse_args()
     return opt
